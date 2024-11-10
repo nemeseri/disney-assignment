@@ -1,0 +1,28 @@
+.set-item {
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform 150ms;
+}
+
+.set-item:focus {
+  outline: 2px solid #fff;
+  transform: scale(1.07);
+  border-radius: 4px;
+}
+
+.set-item:first-child {
+  margin-left: 0;
+}
+
+.set-item h3 {
+  margin: 0;
+  text-indent: -9999px;
+  position: absolute;
+}
+
+.set-item img {
+  display: block;
+  width: 17vw;
+  height: auto;
+}

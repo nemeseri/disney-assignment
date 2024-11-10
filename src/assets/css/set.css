@@ -1,0 +1,25 @@
+.set {
+  margin-bottom: 1rem;
+}
+
+.set:last-child {
+  margin-bottom: 0;
+}
+
+.set h2 {
+  margin: 0;
+  font-weight: 400;
+}
+
+.set-wrap {
+  overflow: scroll;
+  scrollbar-width: none;
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  margin-left: -1rem;
+}
+
+/* .set-wrap::-webkit-scrollbar {
+  display: none;
+} */
