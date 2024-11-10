@@ -59,12 +59,13 @@ class FocusManager {
     e.preventDefault()
     const activeEl = document.activeElement
     const verticalBoundary = activeEl.closest(`.${this.verticalContainerClass}`)
+    console.log(document.activeElement)
 
     // reset focus in Set
     activeEl.parentElement.scrollLeft = 0;
 
     // set focus
-    if (verticalBoundary.nextElementSibling) {
+    if (verticalBoundary.nextElementSibling && verticalBoundary.nextElementSibling.className === 'set') {
       verticalBoundary.nextElementSibling.querySelector(`.${this.focusClassName}`).focus()
     }
   }

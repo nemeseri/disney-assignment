@@ -3,11 +3,10 @@ import SetItem from "./SetItem"
 import '../assets/css/set.css'
 
 class Set extends Component {
-  constructor({ title, items = [], refId = null }) {
+  constructor({ title, items = [] }) {
     super()
     this.title = title
     this.items = items
-    this.refId = refId
 
     this.setupView('set')
     if (this.items.length) {

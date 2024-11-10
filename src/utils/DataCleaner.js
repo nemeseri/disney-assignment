@@ -25,13 +25,6 @@ const DataCleaner = {
         cleanItem.imgUrl = image[cleanItem.type].default.url
       }
 
-      let posterImage = item.image.tile['0.71']
-      if (posterImage && posterImage.default) {
-        cleanItem.posterImgUrl = posterImage.default.default.url
-      } else if (posterImage && posterImage[cleanItem.type]) {
-        cleanItem.posterImgUrl = posterImage[cleanItem.type].default.url
-      }
-
       if (item.videoArt && item.videoArt.length) {
         cleanItem.videoUrl = item.videoArt[0].mediaMetadata.urls[0].url
       }

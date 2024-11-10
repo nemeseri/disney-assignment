@@ -20,6 +20,7 @@ dialog .close {
   overflow: hidden;
   padding: 0;
   border: 1px solid #ddd;
+  z-index: 1;
 }
 
 dialog .close::before {

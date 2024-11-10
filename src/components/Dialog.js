@@ -38,6 +38,7 @@ class Dialog extends Component {
     if (data.videoUrl) {
       const video = document.createElement('video')
       video.setAttribute('controls', true)
+      video.setAttribute('autoplay', true)
       video.setAttribute('poster', data.imgUrl)
       const source = document.createElement('source')
       source.src = data.videoUrl
@@ -86,6 +87,10 @@ class Dialog extends Component {
     }
 
     this.view.append(wrap)
+  }
+
+  mount(target) {
+    target.prepend(this.view)
   }
 }
 
