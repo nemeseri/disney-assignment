@@ -9,7 +9,7 @@ class Set extends Component {
     this.items = items
     this.refId = refId
 
-    this.setupContainer('set')
+    this.setupView('set')
     if (this.items.length) {
       this.buildComponent()
     }
@@ -23,7 +23,7 @@ class Set extends Component {
   appendTitle() {
     const h2 = document.createElement('h2');
     h2.textContent = this.title;
-    this.container.append(h2)
+    this.view.append(h2)
   }
 
   appendItems() {
@@ -32,7 +32,7 @@ class Set extends Component {
     const setItems = this.items.map(i => {
       new SetItem(i).mount(setWrap)
     })
-    this.container.append(setWrap)
+    this.view.append(setWrap)
   }
 }
 

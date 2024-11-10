@@ -32,6 +32,10 @@ const DataCleaner = {
         cleanItem.posterImgUrl = posterImage[cleanItem.type].default.url
       }
 
+      if (item.videoArt && item.videoArt.length) {
+        cleanItem.videoUrl = item.videoArt[0].mediaMetadata.urls[0].url
+      }
+
       if (cleanItem.type !== 'collection') {
         cleanItem.availability = item.currentAvailability
         cleanItem.rating = item.ratings[0].value

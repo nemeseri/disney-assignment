@@ -1,10 +1,10 @@
 class Component {
-  setupContainer(className, type = 'div') {
-    this.container = document.createElement(type)
-    this.container.className = className
+  setupView(className, type = 'div') {
+    this.view = document.createElement(type)
+    this.view.className = className
   }
   mount(target) {
-    target.append(this.container)
+    target.append(this.view)
   }
 }
 

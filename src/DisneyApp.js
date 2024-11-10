@@ -1,5 +1,6 @@
 import Component from './components/Component'
 import Set from './components/Set'
+import Dialog from './components/Dialog'
 import DataCleaner from './utils/DataCleaner'
 import FocusManager from './FocusManager'
 import './assets/css/main.css'
@@ -8,8 +9,9 @@ class DisneyApp extends Component {
   constructor(homeUrl) {
     super()
     this.homeUrl = homeUrl
-    this.setupContainer('app-container')
-    this.focusManager = new FocusManager(this.container)
+    this.setupView('app-container')
+    this.focusManager = new FocusManager(this.view)
+    this.dialog = new Dialog(this.view);
 
     this.fetchHomeData()
   }
@@ -34,14 +36,11 @@ class DisneyApp extends Component {
         setParams.refId = cont.set.refId
       }
 
-      this.appendSet(setParams)
+      new Set(setParams).mount(this.view)
     })
 
+    this.dialog.mount(this.view)
     this.focusManager.focusFirstItem()
-  }
-
-  appendSet(setParams) {
-    new Set(setParams).mount(this.container)
   }
 }
 

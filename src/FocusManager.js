@@ -2,11 +2,15 @@
  * This Class is limited to the current layout and it's not a generic solution
  * to handle keyboard navigation in a 'grid like' environment.
  * 
- * Generic solution can be easily added by adding HTML traversing libs 
+ * Generic solution can be added by HTML traversing libs 
  * focusing on the focusClassName property.
  */
 class FocusManager {
-  constructor(container, focusClassName = 'set-item', verticalContainerClass = 'set') {
+  constructor(
+    container, 
+    focusClassName = 'set-item', 
+    verticalContainerClass = 'set'
+  ) {
     this.container = container
     this.focusClassName = focusClassName
     this.verticalContainerClass = verticalContainerClass
@@ -26,12 +30,6 @@ class FocusManager {
         case 'ArrowLeft': 
           this.left(e)
           break
-        case 'Backspace':
-          this.back(e)
-          break
-        case 'Enter':
-          this.enter(e)
-          break
       }
     });
   }
@@ -45,38 +43,42 @@ class FocusManager {
 
   up(e) {
     e.preventDefault()
-    document.activeElement
-      .closest(`.${this.verticalContainerClass}`)
-      .previousElementSibling
-      .querySelector(`.${this.focusClassName}`).focus()
+    const activeEl = document.activeElement
+    const verticalBoundary = activeEl.closest(`.${this.verticalContainerClass}`)
+    
+    // reset focus in Set
+    activeEl.parentElement.scrollLeft = 0;
+
+    // set focus
+    if (verticalBoundary.previousElementSibling) {
+      verticalBoundary.previousElementSibling.querySelector(`.${this.focusClassName}`).focus()
+    }
   }
 
   down(e) {
     e.preventDefault()
-    document.activeElement
-      .closest(`.${this.verticalContainerClass}`)
-      .nextElementSibling
-      .querySelector(`.${this.focusClassName}`).focus()
+    const activeEl = document.activeElement
+    const verticalBoundary = activeEl.closest(`.${this.verticalContainerClass}`)
+
+    // reset focus in Set
+    activeEl.parentElement.scrollLeft = 0;
+
+    // set focus
+    if (verticalBoundary.nextElementSibling) {
+      verticalBoundary.nextElementSibling.querySelector(`.${this.focusClassName}`).focus()
+    }
   }
 
   left(e) {
     e.preventDefault()
-    document.activeElement.previousElementSibling.focus()
+    const el = document.activeElement.previousElementSibling
+    if (el) el.focus()
   }
 
   right(e) {
     e.preventDefault()
-    document.activeElement.nextElementSibling.focus()
-  }
-
-  enter(e) {
-    e.preventDefault()
-    console.log(e);
-  }
-
-  back(e) {
-    e.preventDefault()
-    console.log(e);
+    const el = document.activeElement.nextElementSibling
+    if (el) el.focus()
   }
 }
 

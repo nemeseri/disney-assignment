@@ -11,6 +11,10 @@
   border-radius: 4px;
 }
 
+.set-item:hover {
+  outline: 2px solid #fff;
+}
+
 .set-item:first-child {
   margin-left: 0;
 }
