@@ -6,6 +6,7 @@ class Dialog extends Component {
     super()
     this.parentContainter = parentContainter
     this.parentContainter.addEventListener('itemSelected', (e) => this.open(e));
+    this.parentContainter.addEventListener('keydown', (e) => this.onKeyDown(e));
 
     this.setupView('details', 'dialog')
   }
@@ -13,10 +14,27 @@ class Dialog extends Component {
   open(e) {
     this.view.textContent = ''
     this.buildComponent(JSON.parse(e.target.getAttribute('data-json')))
-    this.view.setAttribute('open', true)
+    this.view.showModal()
+  }
+
+  close() {
+    this.view.textContent = ''
+    this.view.close()
+  }
+
+  onKeyDown(e) {
+    if (e.key === 'Backspace') {
+      this.view.close()
+    }
   }
 
   buildComponent(data) {
+    const bttn = document.createElement('button')
+    bttn.textContent = 'Close'
+    bttn.className = 'close'
+    bttn.addEventListener('click', () => this.close())
+    this.view.append(bttn)
+
     if (data.videoUrl) {
       const video = document.createElement('video')
       video.setAttribute('controls', true)
@@ -25,16 +43,19 @@ class Dialog extends Component {
       source.src = data.videoUrl
       video.append(source)
       this.view.append(video)
-    } else if (data.posterImgUrl) {
+    } else {
       const img = document.createElement('img')
-      img.src = data.posterImgUrl
+      img.src = data.imgUrl
       img.alt = data.title
       this.view.append(img)
     }
 
+    const wrap = document.createElement('div')
+    wrap.className = 'dialog-wrap'
+
     const h4 = document.createElement('h4')
     h4.textContent = data.title
-    this.view.append(h4)
+    wrap.append(h4)
 
     if (data.type !== 'collection') {
       const ul = document.createElement('ul')
@@ -61,8 +82,10 @@ class Dialog extends Component {
         ul.append(releaseDate)
       }
 
-      this.view.append(ul)
+      wrap.append(ul)
     }
+
+    this.view.append(wrap)
   }
 }
 
