@@ -6,48 +6,48 @@ dialog {
   background-color: #222;
   color: #fff;
   border-radius: 4px;
-}
 
-dialog .close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 1.5rem;
-  cursor: pointer;
-  text-indent: -9999px;
-  overflow: hidden;
-  padding: 0;
-  border: 1px solid #ddd;
-  z-index: 1;
-}
+  .close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    text-indent: -9999px;
+    overflow: hidden;
+    padding: 0;
+    border: 1px solid #ddd;
+    z-index: 1;
 
-dialog .close::before {
-  content: 'X';
-  display: block;
-  text-indent: 0;
-  line-height: 3rem;
-  text-align: center;
-  font-weight: 700;
-  font-size: 1rem;
+    &::before {
+      content: 'X';
+      display: block;
+      text-indent: 0;
+      line-height: 3rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+  }
+
+  video,
+  img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .dialog-wrap {
+    padding: 2rem;
+
+    h4 {
+      margin-top: 0;
+    }  
+  }
 }
 
 ::backdrop {
   background: rgba(0, 0, 0, 0.8);
-}
-
-dialog video,
-dialog img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.dialog-wrap {
-  padding: 2rem;
-}
-
-.dialog-wrap h4 {
-  margin-top: 0;
 }
