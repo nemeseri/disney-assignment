@@ -72,17 +72,19 @@ class DisneyApp extends Component {
     this.dialog.mount(this.view)
 
     /**
-     * At this point we insert a large amount of HTML element
-     * into the DOM. The creation of some of these elements is still 
-     * queued as a microtask.
+     * At this point we are still inserting a large amount 
+     * of HTML element into the DOM. The creation of some of these elements 
+     * is still queued as a microtask.
      * 
      * this.focusManager.focusFirstItem() runs as a MACRO task.
      * To ensure that the DOM in the container is ready, we can queue 
      * this task as a MICRO Task putting it at the end of the MICRO Task
-     * queue.
+     * queue. This is essentially nicer than wrapping it in a setTimeout()
      * 
-     * Other more robust solution is to implement the MutationObserver API
+     * A more robust solution is to implement the MutationObserver API
      * and observ mutations to the this.container DOM element.
+     * This could be added as a generic feature to Component.js
+     * and implemented as an onLoaded() method.
      */
     queueMicrotask(() => this.focusManager.focusFirstItem())
   }
