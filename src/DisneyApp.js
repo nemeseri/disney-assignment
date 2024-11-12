@@ -36,6 +36,9 @@ class DisneyApp extends Component {
         this.onDataLoad(containers)
         this.cacheManager.set('home', containers, HOME_CACHE_TIME)
       })
+      .catch(e => {
+        this.onDataError()
+      })
   }
 
   fetchRef(refId) {
@@ -51,6 +54,18 @@ class DisneyApp extends Component {
         this.onRefLoad(d.data)
         this.cacheManager.set(`ref-${refId}`, d.data, REF_CACHE_TIME)
       })
+      .catch(e => {
+        this.onDataError()
+      })
+  }
+
+  onDataError() {
+    const h2 = document.createElement('h2')
+    h2.textContent = 'Error occured during fetching API Data.'
+    const h3 = document.createElement('h3')
+    h3.textContent = 'Please try again later.'
+    this.view.append(h2)
+    this.view.append(h3)
   }
 
   onDataLoad(containers) {
