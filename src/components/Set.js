@@ -1,5 +1,5 @@
 import Component from './Component'
-import SetItem from "./SetItem"
+import SetItem from './SetItem'
 import '../assets/css/set.css'
 
 class Set extends Component {
