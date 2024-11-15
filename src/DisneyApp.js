@@ -7,13 +7,11 @@ import CacheManager from './utils/CacheManager'
 import './assets/css/main.css'
 
 const HOME_CACHE_TIME = 1000*60*60*24 // 1 day
-const REF_CACHE_TIME = 1000*60*60*24 // 1 day
 
 class DisneyApp extends Component {
-  constructor(homeUrl, refUrl) {
+  constructor(homeUrl) {
     super()
     this.homeUrl = homeUrl
-    this.refUrl = refUrl
     this.setupView('app-container')
     this.cacheManager = new CacheManager()
     this.focusManager = new FocusManager(this.view)
@@ -42,24 +40,6 @@ class DisneyApp extends Component {
       })
   }
 
-  fetchRef(refId) {
-    const refData = this.cacheManager.get(`ref-${refId}`)
-    if (refData !== null) {
-      this.onRefLoad(refData)
-      return;
-    }
-
-    fetch(this.refUrl.replace('#refid#', refId))
-      .then(response => response.json())
-      .then(d => {
-        this.onRefLoad(d.data)
-        this.cacheManager.set(`ref-${refId}`, d.data, REF_CACHE_TIME)
-      })
-      .catch(e => {
-        this.onDataError()
-      })
-  }
-
   onDataLoad(containers) {
     containers.map(cont => {
       let setParams = {
@@ -69,10 +49,9 @@ class DisneyApp extends Component {
       if (cont.set.items && cont.set.items.length) {
         setParams.items = DataCleaner.getSetItems(cont.set.items)
         new Set(setParams).mount(this.view)
-      }
-  
-      if (cont.set.refId) {
-        this.fetchRef(cont.set.refId)
+      } else if (cont.set.refId) {
+        setParams.refId = cont.set.refId
+        new Set(setParams).mount(this.view)
       }
     })
 
@@ -93,18 +72,6 @@ class DisneyApp extends Component {
      */
     queueMicrotask(() => this.focusManager.focusFirstItem())
     //this.focusManager.focusFirstItem()
-  }
-
-  onRefLoad(d) {
-    const data = d.TrendingSet || d.CuratedSet || d.PersonalizedCuratedSet
-    let setParams = {
-      title: DataCleaner.getSetTitle(data),
-    }
-
-    if (data.items && data.items.length) {
-      setParams.items = DataCleaner.getSetItems(data.items)
-      new Set(setParams).mount(this.view)
-    }
   }
 }
 
