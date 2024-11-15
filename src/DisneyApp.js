@@ -18,6 +18,7 @@ class DisneyApp extends Component {
     this.cacheManager = new CacheManager()
     this.focusManager = new FocusManager(this.view)
     this.dialog = new Dialog(this.view)
+    this.dialog.mount(this.view)
 
     this.fetchHomeData()
   }
@@ -83,25 +84,6 @@ class DisneyApp extends Component {
         this.fetchRef(cont.set.refId)
       }
     })
-
-    this.dialog.mount(this.view)
-
-    /**
-     * At this point we are still inserting a large amount 
-     * of HTML element into the DOM. The creation of some of these elements 
-     * is still queued as a microtask.
-     * 
-     * this.focusManager.focusFirstItem() runs as a MACRO task.
-     * To ensure that the DOM in the container is ready, we can queue 
-     * this task as a MICRO Task putting it at the end of the MICRO Task
-     * queue. This is essentially nicer than wrapping it in a setTimeout()
-     * 
-     * A more robust solution is to implement the MutationObserver API
-     * and observ mutations to the this.container DOM element.
-     * This could be added as a generic feature to Component.js
-     * and implemented as an onLoaded() method.
-     */
-    queueMicrotask(() => this.focusManager.focusFirstItem())
   }
 
   onRefLoad(d) {
@@ -114,6 +96,34 @@ class DisneyApp extends Component {
       setParams.items = DataCleaner.getSetItems(data.items)
       new Set(setParams).mount(this.view)
     }
+  }
+
+  mount(target) {
+    super.mount(target)
+
+    /**
+     * During the initial Home data load, we spend significant time 
+     * rendering DOM elements. These render events are MICRO tasks.
+     * 
+     * To ensure that we have an element to focus on, even on slower 
+     * devices, we implemented the MutationObserver API in the parent
+     * class of the components.
+     * 
+     * This allows us, to attach mutation observers to the components.
+     * Mutations can be only observered, once the component has been
+     * inserted into the DOM. This is why we override the mount method
+     * here. 
+     */
+    this.addMutationObserver((list, observer) => {
+      list.map(mutationItem => {
+        // The first set has been rendered!
+        if (mutationItem.addedNodes[0].className === 'set') {
+          this.focusManager.focusFirstItem()
+          // no need to observe anymore
+          observer.disconnect()
+        }
+      })
+    })
   }
 }
 

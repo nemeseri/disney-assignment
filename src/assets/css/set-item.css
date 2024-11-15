@@ -4,6 +4,12 @@
   flex-shrink: 0;
   transition: transform 150ms;
 
+  width: 17vw;
+  aspect-ratio: 1.78;
+  height: auto;
+  background-color: #222;
+
+
   &:focus {
     outline: 2px solid #fff;
     transform: scale(1.07);
@@ -26,7 +32,7 @@
 
   img {
     display: block;
-    width: 17vw;
+    width: 100%;
     height: auto;
   }
 }

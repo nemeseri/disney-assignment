@@ -50,7 +50,7 @@ class FocusManager {
     activeEl.parentElement.scrollLeft = 0;
 
     // set focus
-    if (verticalBoundary.previousElementSibling) {
+    if (verticalBoundary.previousElementSibling && verticalBoundary.previousElementSibling.className === 'set') {
       verticalBoundary.previousElementSibling.querySelector(`.${this.focusClassName}`).focus()
     }
   }

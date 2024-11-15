@@ -20,6 +20,7 @@ class SetItem extends Component {
 
     const img = document.createElement('img')
     img.alt = this.data.title
+    img.title = this.data.title
     img.src = this.data.imgUrl
 
     // image is not loading from src
