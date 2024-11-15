@@ -62,10 +62,6 @@ class Dialog extends Component {
       const ul = document.createElement('ul')
 
       if (data.availability) {
-        const kids = document.createElement('li');
-        kids.textContent = 'Kid friendly: ' + (data.availability.kidsMode ? 'yes' : 'no')
-        ul.append(kids)
-
         const region = document.createElement('li');
         region.textContent = 'Region: ' + data.availability.region
         ul.append(region)

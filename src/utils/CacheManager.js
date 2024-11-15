@@ -7,7 +7,7 @@ class CacheManager {
     cacheKey = this.prefix + cacheKey;
     let entry = localStorage.getItem(cacheKey)
     const now = new Date().getTime()
-    if (true || entry === null) {
+    if (entry === null) {
       return null
     }
 
