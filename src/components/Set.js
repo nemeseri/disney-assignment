@@ -12,44 +12,22 @@ class Set extends Component {
     super()
     this.title = title
     this.items = items
+    this.refId = refId
+    this.cacheManager = new CacheManager()
 
     this.setupView('set')
-    if (this.items.length) {
-      this.buildComponent()
-    } else if (refId !== null) {
-      this.cacheManager = new CacheManager()
-      this.fetchRef(refId)
+    if (this.refId !== null) {
+      this.view.classList.add('loading')
+      this.addIntersectionObserver()
     }
-  }
-
-  fetchRef(refId) {
-    const refData = this.cacheManager.get(`ref-${refId}`)
-    if (refData !== null) {
-      this.onRefLoad(refData)
-      return;
-    }
-
-    fetch(refUrl.replace('#refid#', refId))
-      .then(response => response.json())
-      .then(d => {
-        this.onRefLoad(d.data)
-        this.cacheManager.set(`ref-${refId}`, d.data, REF_CACHE_TIME)
-      })
-      .catch(e => {
-        this.onDataError()
-      })
-  }
-
-  onRefLoad(d) {
-    const data = d.TrendingSet || d.CuratedSet || d.PersonalizedCuratedSet
-    if (data.items && data.items.length) {
-      this.items = DataCleaner.getSetItems(data.items)
-      this.buildComponent()
-    }
+    this.buildComponent()
   }
 
   buildComponent() {
     this.appendTitle()
+    const setWrap = document.createElement('div')
+    setWrap.className = 'set-wrap'
+    this.view.append(setWrap)
     this.appendItems()
   }
 
@@ -60,12 +38,51 @@ class Set extends Component {
   }
 
   appendItems() {
-    const setWrap = document.createElement('div')
-    setWrap.className = 'set-wrap'
     const setItems = this.items.map(i => {
-      new SetItem(i).mount(setWrap)
+      new SetItem(i).mount(this.view.querySelector('.set-wrap'))
     })
-    this.view.append(setWrap)
+    // this.view.append(setWrap)
+  }
+
+  fetchSet() {
+    const refData = this.cacheManager.get(`ref-${this.refId}`)
+    if (refData !== null) {
+      this.onSetLoad(refData)
+      return;
+    }
+
+    fetch(refUrl.replace('#refid#', this.refId), { priority: 'high' })
+      .then(response => response.json())
+      .then(d => {
+        this.onSetLoad(d.data)
+        this.cacheManager.set(`ref-${this.refId}`, d.data, REF_CACHE_TIME)
+      })
+      .catch(e => {
+        this.onDataError()
+      })
+  }
+
+  onSetLoad(d) {
+    const data = d.TrendingSet || d.CuratedSet || d.PersonalizedCuratedSet
+    if (data.items && data.items.length) {
+      this.items = DataCleaner.getSetItems(data.items)
+      this.appendItems()
+    }
+    if (this.intersectionObserver) {
+      this.intersectionObserver.disconnect()
+    }
+    this.view.classList.remove('loading')
+  }
+
+  addIntersectionObserver() {
+    this.intersectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(ent => {
+        if (ent.target && ent.isIntersecting) {
+          this.fetchSet()
+        }
+      })
+    })
+    this.intersectionObserver.observe(this.view)
   }
 }
 

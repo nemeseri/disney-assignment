@@ -13,10 +13,20 @@
   .set-wrap {
     overflow: scroll;
     scrollbar-width: none;
+    scroll-behavior: smooth;
     display: flex;
     gap: 1rem;
     padding: 1rem;
     margin-left: -1rem;
+  }
+
+  &.loading .set-wrap::before {
+    content: ' ';
+    display: block;
+    width: 17vw;
+    aspect-ratio: 1.78;
+    height: 100%;
+    background-color: #222;
   }
 
   /* .set-wrap::-webkit-scrollbar {

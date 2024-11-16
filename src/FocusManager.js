@@ -41,6 +41,15 @@ class FocusManager {
       .focus()
   }
 
+  focusItem(el) {
+    el.focus()
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center',
+    })
+  }
+
   up(e) {
     e.preventDefault()
     const activeEl = document.activeElement
@@ -50,8 +59,10 @@ class FocusManager {
     activeEl.parentElement.scrollLeft = 0;
 
     // set focus
-    if (verticalBoundary.previousElementSibling && verticalBoundary.previousElementSibling.className === 'set') {
-      verticalBoundary.previousElementSibling.querySelector(`.${this.focusClassName}`).focus()
+    if (verticalBoundary.previousElementSibling 
+      && verticalBoundary.previousElementSibling.classList.contains('set')) {
+      const el = verticalBoundary.previousElementSibling.querySelector(`.${this.focusClassName}`)
+      this.focusItem(el)
     }
   }
 
@@ -64,21 +75,23 @@ class FocusManager {
     activeEl.parentElement.scrollLeft = 0;
 
     // set focus
-    if (verticalBoundary.nextElementSibling && verticalBoundary.nextElementSibling.className === 'set') {
-      verticalBoundary.nextElementSibling.querySelector(`.${this.focusClassName}`).focus()
+    if (verticalBoundary.nextElementSibling 
+      && verticalBoundary.nextElementSibling.classList.contains('set')) {
+      const el = verticalBoundary.nextElementSibling.querySelector(`.${this.focusClassName}`)
+      this.focusItem(el)
     }
   }
 
   left(e) {
     e.preventDefault()
     const el = document.activeElement.previousElementSibling
-    if (el) el.focus()
+    if (el) this.focusItem(el)
   }
 
   right(e) {
     e.preventDefault()
     const el = document.activeElement.nextElementSibling
-    if (el) el.focus()
+    if (el) this.focusItem(el)
   }
 }
 
