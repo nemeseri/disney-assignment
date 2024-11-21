@@ -50,36 +50,37 @@ class FocusManager {
     })
   }
 
-  up(e) {
-    e.preventDefault()
+  verticalMove(direction) {
+    let dir;
+    if (direction === 1) {
+      dir = 'nextElementSibling'
+    } else {
+      dir = 'previousElementSibling'
+    }
+
     const activeEl = document.activeElement
     const verticalBoundary = activeEl.closest(`.${this.verticalContainerClass}`)
-    
-    // reset focus in Set
-    activeEl.parentElement.scrollLeft = 0;
 
-    // set focus
-    if (verticalBoundary.previousElementSibling 
-      && verticalBoundary.previousElementSibling.classList.contains('set')) {
-      const el = verticalBoundary.previousElementSibling.querySelector(`.${this.focusClassName}`)
-      this.focusItem(el)
+    if (!verticalBoundary[dir] 
+      || !verticalBoundary[dir].classList.contains('set')) {
+      return
     }
+
+    const el = verticalBoundary[dir].querySelector(`.${this.focusClassName}`)
+    if (el) {
+      this.focusItem(el)
+      activeEl.parentElement.scrollLeft = 0
+    }
+  }
+
+  up(e) {
+    e.preventDefault()
+    this.verticalMove(-1)
   }
 
   down(e) {
     e.preventDefault()
-    const activeEl = document.activeElement
-    const verticalBoundary = activeEl.closest(`.${this.verticalContainerClass}`)
-
-    // reset focus in Set
-    activeEl.parentElement.scrollLeft = 0;
-
-    // set focus
-    if (verticalBoundary.nextElementSibling 
-      && verticalBoundary.nextElementSibling.classList.contains('set')) {
-      const el = verticalBoundary.nextElementSibling.querySelector(`.${this.focusClassName}`)
-      this.focusItem(el)
-    }
+    this.verticalMove(1)
   }
 
   left(e) {
