@@ -14,6 +14,7 @@ class FocusManager {
     this.container = container
     this.focusClassName = focusClassName
     this.verticalContainerClass = verticalContainerClass
+    this.focusedItemMidPoint = null
 
     // register event handlers in container
     this.container.addEventListener('keydown', (e) => {
@@ -33,12 +34,25 @@ class FocusManager {
       }
     });
   }
+
+  getClosestEl(targetSet, activeEl) {
+    const activeRect = activeEl.getBoundingClientRect()
+    const currentFocusPoint = activeRect.left + activeRect.width/2
+    const setItems = targetSet.querySelectorAll(`.${this.focusClassName}`)
+
+    for (let i = 0; i < setItems.length; i++) {
+      if (setItems[i].getBoundingClientRect().right >= currentFocusPoint) {
+        return setItems[i]
+      }
+    }
+
+    return setItems[setItems.length-1]
+  }
   
   //set the focus on first focusable element
   focusFirstItem() {
-    this.container
-      .querySelector(`.${this.focusClassName}`)
-      .focus()
+    const el = this.container.querySelector(`.${this.focusClassName}`)
+    this.focusItem(el)
   }
 
   focusItem(el) {
@@ -66,11 +80,8 @@ class FocusManager {
       return
     }
 
-    const el = verticalBoundary[dir].querySelector(`.${this.focusClassName}`)
-    if (el) {
-      this.focusItem(el)
-      activeEl.parentElement.scrollLeft = 0
-    }
+    const el = this.getClosestEl(verticalBoundary[dir], activeEl)
+    if (el) this.focusItem(el)
   }
 
   up(e) {
