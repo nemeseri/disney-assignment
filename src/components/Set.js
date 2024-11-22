@@ -33,7 +33,7 @@ class Set extends Component {
 
   appendTitle() {
     const h2 = document.createElement('h2');
-    h2.textContent = this.title;
+    h2.textContent = this.title
     this.view.append(h2)
   }
 
