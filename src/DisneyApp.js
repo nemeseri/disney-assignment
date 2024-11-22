@@ -18,6 +18,11 @@ class DisneyApp extends Component {
     this.dialog = new Dialog(this.view)
     this.dialog.mount(this.view)
 
+    this.addMutationObserver((list, observer) => {
+      this.focusManager.focusFirstItem()
+      observer.disconnect()
+    })
+
     this.fetchHomeData()
   }
 
@@ -55,22 +60,13 @@ class DisneyApp extends Component {
     })
 
     /**
-     * At this point we are still inserting a large amount 
-     * of HTML element into the DOM. The creation of some of these elements 
-     * is still queued as a microtask.
+     * If the app is comming from the cache, at this point the container is not yet
+     * added to the DOM, so we don't have anything to focus on.
      * 
-     * this.focusManager.focusFirstItem() runs as a MACRO task.
-     * To ensure that the DOM in the container is ready, we can queue 
-     * this task as a MICRO Task putting it at the end of the MICRO Task
-     * queue. This is essentially nicer than wrapping it in a setTimeout()
+     * This queues the focus event after the already queued MACRO event.
      * 
-     * A more robust solution is to implement the MutationObserver API
-     * and observ mutations to the this.container DOM element.
-     * This could be added as a generic feature to Component.js
-     * and implemented as an onLoaded() method.
      */
-    queueMicrotask(() => this.focusManager.focusFirstItem())
-    //this.focusManager.focusFirstItem()
+    // queueMicrotask(() => this.focusManager.focusFirstItem())
   }
 }
 
