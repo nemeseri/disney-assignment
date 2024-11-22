@@ -48,11 +48,10 @@ class DisneyApp extends Component {
 
       if (cont.set.items && cont.set.items.length) {
         setParams.items = DataCleaner.getSetItems(cont.set.items)
-        new Set(setParams).mount(this.view)
       } else if (cont.set.refId) {
         setParams.refId = cont.set.refId
-        new Set(setParams).mount(this.view)
       }
+      new Set(setParams).mount(this.view)
     })
 
     /**

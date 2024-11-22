@@ -55,12 +55,12 @@ class FocusManager {
     this.focusItem(el)
   }
 
-  focusItem(el) {
+  focusItem(el, inlinePos = 'center') {
     el.focus()
     el.scrollIntoView({
       behavior: 'smooth',
       block: 'center',
-      inline: 'center',
+      inline: inlinePos,
     })
   }
 
@@ -81,7 +81,7 @@ class FocusManager {
     }
 
     const el = this.getClosestEl(verticalBoundary[dir], activeEl)
-    if (el) this.focusItem(el)
+    if (el) this.focusItem(el, 'nearest')
   }
 
   up(e) {
